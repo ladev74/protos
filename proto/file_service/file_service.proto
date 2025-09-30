@@ -6,24 +6,28 @@ option go_package = "file_service.v1;fileservicev1";
 
 
 service FileService {
-  rpc UploadFile (UploadFileRequest) returns (UploadFileResponse);
+  rpc UploadFile (stream UploadFileRequest) returns (UploadFileResponse);
   rpc ListFiles (ListFilesRequest) returns (ListFilesResponse);
   rpc GetFile (GetFileRequest) returns (GetFileResponse);
 }
 
 message File {
-  string id = 1;
-  repeated bytes data = 2;
+  string name = 1;
+  string id = 2;
+  string createdAt = 3;
+  string updatedAt = 4;
 }
 
+
 message UploadFileRequest {
-  string id = 1;
-  repeated bytes data = 2;
+  string fileName = 1;
+  bytes chunk = 2;
 }
 
 message UploadFileResponse {
-  string id = 1;
+  string fileId = 1;
 }
+
 
 message ListFilesRequest {
   int64 limit = 1;
@@ -33,6 +37,7 @@ message ListFilesResponse {
   repeated File files = 1;
 }
 
+
 message GetFileRequest {
   string file_id = 1;
 }
@@ -40,3 +45,5 @@ message GetFileRequest {
 message GetFileResponse {
   File file = 1;
 }
+
+// TODO: stream for get_file

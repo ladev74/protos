@@ -23,8 +23,10 @@ const (
 
 type File struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Data          [][]byte               `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,3,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,4,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,6 +61,13 @@ func (*File) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *File) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 func (x *File) GetId() string {
 	if x != nil {
 		return x.Id
@@ -66,17 +75,24 @@ func (x *File) GetId() string {
 	return ""
 }
 
-func (x *File) GetData() [][]byte {
+func (x *File) GetCreatedAt() string {
 	if x != nil {
-		return x.Data
+		return x.CreatedAt
 	}
-	return nil
+	return ""
+}
+
+func (x *File) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
 }
 
 type UploadFileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Data          [][]byte               `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	FileName      string                 `protobuf:"bytes,1,opt,name=fileName,proto3" json:"fileName,omitempty"`
+	Chunk         []byte                 `protobuf:"bytes,2,opt,name=chunk,proto3" json:"chunk,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,23 +127,23 @@ func (*UploadFileRequest) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *UploadFileRequest) GetId() string {
+func (x *UploadFileRequest) GetFileName() string {
 	if x != nil {
-		return x.Id
+		return x.FileName
 	}
 	return ""
 }
 
-func (x *UploadFileRequest) GetData() [][]byte {
+func (x *UploadFileRequest) GetChunk() []byte {
 	if x != nil {
-		return x.Data
+		return x.Chunk
 	}
 	return nil
 }
 
 type UploadFileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	FileId        string                 `protobuf:"bytes,1,opt,name=fileId,proto3" json:"fileId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -162,9 +178,9 @@ func (*UploadFileResponse) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *UploadFileResponse) GetId() string {
+func (x *UploadFileResponse) GetFileId() string {
 	if x != nil {
-		return x.Id
+		return x.FileId
 	}
 	return ""
 }
@@ -349,15 +365,17 @@ var File_file_service_file_service_proto protoreflect.FileDescriptor
 
 const file_file_service_file_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ffile_service/file_service.proto\x12\ffile_service\"*\n" +
-	"\x04File\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04data\x18\x02 \x03(\fR\x04data\"7\n" +
-	"\x11UploadFileRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04data\x18\x02 \x03(\fR\x04data\"$\n" +
-	"\x12UploadFileResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"(\n" +
+	"\x1ffile_service/file_service.proto\x12\ffile_service\"f\n" +
+	"\x04File\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1c\n" +
+	"\tcreatedAt\x18\x03 \x01(\tR\tcreatedAt\x12\x1c\n" +
+	"\tupdatedAt\x18\x04 \x01(\tR\tupdatedAt\"E\n" +
+	"\x11UploadFileRequest\x12\x1a\n" +
+	"\bfileName\x18\x01 \x01(\tR\bfileName\x12\x14\n" +
+	"\x05chunk\x18\x02 \x01(\fR\x05chunk\",\n" +
+	"\x12UploadFileResponse\x12\x16\n" +
+	"\x06fileId\x18\x01 \x01(\tR\x06fileId\"(\n" +
 	"\x10ListFilesRequest\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x03R\x05limit\"=\n" +
 	"\x11ListFilesResponse\x12(\n" +
@@ -365,10 +383,10 @@ const file_file_service_file_service_proto_rawDesc = "" +
 	"\x0eGetFileRequest\x12\x17\n" +
 	"\afile_id\x18\x01 \x01(\tR\x06fileId\"9\n" +
 	"\x0fGetFileResponse\x12&\n" +
-	"\x04file\x18\x01 \x01(\v2\x12.file_service.FileR\x04file2\xf4\x01\n" +
-	"\vFileService\x12O\n" +
+	"\x04file\x18\x01 \x01(\v2\x12.file_service.FileR\x04file2\xf6\x01\n" +
+	"\vFileService\x12Q\n" +
 	"\n" +
-	"UploadFile\x12\x1f.file_service.UploadFileRequest\x1a .file_service.UploadFileResponse\x12L\n" +
+	"UploadFile\x12\x1f.file_service.UploadFileRequest\x1a .file_service.UploadFileResponse(\x01\x12L\n" +
 	"\tListFiles\x12\x1e.file_service.ListFilesRequest\x1a\x1f.file_service.ListFilesResponse\x12F\n" +
 	"\aGetFile\x12\x1c.file_service.GetFileRequest\x1a\x1d.file_service.GetFileResponseB\x1fZ\x1dfile_service.v1;fileservicev1b\x06proto3"
 
