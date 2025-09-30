@@ -4,6 +4,7 @@ package file_service;
 
 option go_package = "file_service.v1;fileservicev1";
 
+import "google/protobuf/timestamp.proto";
 
 service FileService {
   rpc UploadFile (stream UploadFileRequest) returns (UploadFileResponse);
@@ -12,10 +13,10 @@ service FileService {
 }
 
 message File {
-  string name = 1;
-  string id = 2;
-  string createdAt = 3;
-  string updatedAt = 4;
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  google.protobuf.Timestamp updatedAt = 4;
 }
 
 
@@ -31,6 +32,7 @@ message UploadFileResponse {
 
 message ListFilesRequest {
   int64 limit = 1;
+  int64 offset = 2;
 }
 
 message ListFilesResponse {

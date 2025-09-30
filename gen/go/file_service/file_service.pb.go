@@ -9,6 +9,7 @@ package fileservicev1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -23,10 +24,10 @@ const (
 
 type File struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	CreatedAt     string                 `protobuf:"bytes,3,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
-	UpdatedAt     string                 `protobuf:"bytes,4,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,13 +62,6 @@ func (*File) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *File) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
 func (x *File) GetId() string {
 	if x != nil {
 		return x.Id
@@ -75,18 +69,25 @@ func (x *File) GetId() string {
 	return ""
 }
 
-func (x *File) GetCreatedAt() string {
+func (x *File) GetName() string {
 	if x != nil {
-		return x.CreatedAt
+		return x.Name
 	}
 	return ""
 }
 
-func (x *File) GetUpdatedAt() string {
+func (x *File) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *File) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
-	return ""
+	return nil
 }
 
 type UploadFileRequest struct {
@@ -188,6 +189,7 @@ func (x *UploadFileResponse) GetFileId() string {
 type ListFilesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         int64                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int64                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -225,6 +227,13 @@ func (*ListFilesRequest) Descriptor() ([]byte, []int) {
 func (x *ListFilesRequest) GetLimit() int64 {
 	if x != nil {
 		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListFilesRequest) GetOffset() int64 {
+	if x != nil {
+		return x.Offset
 	}
 	return 0
 }
@@ -365,19 +374,20 @@ var File_file_service_file_service_proto protoreflect.FileDescriptor
 
 const file_file_service_file_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1ffile_service/file_service.proto\x12\ffile_service\"f\n" +
-	"\x04File\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1c\n" +
-	"\tcreatedAt\x18\x03 \x01(\tR\tcreatedAt\x12\x1c\n" +
-	"\tupdatedAt\x18\x04 \x01(\tR\tupdatedAt\"E\n" +
+	"\x1ffile_service/file_service.proto\x12\ffile_service\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9e\x01\n" +
+	"\x04File\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x128\n" +
+	"\tcreatedAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
+	"\tupdatedAt\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"E\n" +
 	"\x11UploadFileRequest\x12\x1a\n" +
 	"\bfileName\x18\x01 \x01(\tR\bfileName\x12\x14\n" +
 	"\x05chunk\x18\x02 \x01(\fR\x05chunk\",\n" +
 	"\x12UploadFileResponse\x12\x16\n" +
-	"\x06fileId\x18\x01 \x01(\tR\x06fileId\"(\n" +
+	"\x06fileId\x18\x01 \x01(\tR\x06fileId\"@\n" +
 	"\x10ListFilesRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x03R\x05limit\"=\n" +
+	"\x05limit\x18\x01 \x01(\x03R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x02 \x01(\x03R\x06offset\"=\n" +
 	"\x11ListFilesResponse\x12(\n" +
 	"\x05files\x18\x01 \x03(\v2\x12.file_service.FileR\x05files\")\n" +
 	"\x0eGetFileRequest\x12\x17\n" +
@@ -404,28 +414,31 @@ func file_file_service_file_service_proto_rawDescGZIP() []byte {
 
 var file_file_service_file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_file_service_file_service_proto_goTypes = []any{
-	(*File)(nil),               // 0: file_service.File
-	(*UploadFileRequest)(nil),  // 1: file_service.UploadFileRequest
-	(*UploadFileResponse)(nil), // 2: file_service.UploadFileResponse
-	(*ListFilesRequest)(nil),   // 3: file_service.ListFilesRequest
-	(*ListFilesResponse)(nil),  // 4: file_service.ListFilesResponse
-	(*GetFileRequest)(nil),     // 5: file_service.GetFileRequest
-	(*GetFileResponse)(nil),    // 6: file_service.GetFileResponse
+	(*File)(nil),                  // 0: file_service.File
+	(*UploadFileRequest)(nil),     // 1: file_service.UploadFileRequest
+	(*UploadFileResponse)(nil),    // 2: file_service.UploadFileResponse
+	(*ListFilesRequest)(nil),      // 3: file_service.ListFilesRequest
+	(*ListFilesResponse)(nil),     // 4: file_service.ListFilesResponse
+	(*GetFileRequest)(nil),        // 5: file_service.GetFileRequest
+	(*GetFileResponse)(nil),       // 6: file_service.GetFileResponse
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
 }
 var file_file_service_file_service_proto_depIdxs = []int32{
-	0, // 0: file_service.ListFilesResponse.files:type_name -> file_service.File
-	0, // 1: file_service.GetFileResponse.file:type_name -> file_service.File
-	1, // 2: file_service.FileService.UploadFile:input_type -> file_service.UploadFileRequest
-	3, // 3: file_service.FileService.ListFiles:input_type -> file_service.ListFilesRequest
-	5, // 4: file_service.FileService.GetFile:input_type -> file_service.GetFileRequest
-	2, // 5: file_service.FileService.UploadFile:output_type -> file_service.UploadFileResponse
-	4, // 6: file_service.FileService.ListFiles:output_type -> file_service.ListFilesResponse
-	6, // 7: file_service.FileService.GetFile:output_type -> file_service.GetFileResponse
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	7, // 0: file_service.File.createdAt:type_name -> google.protobuf.Timestamp
+	7, // 1: file_service.File.updatedAt:type_name -> google.protobuf.Timestamp
+	0, // 2: file_service.ListFilesResponse.files:type_name -> file_service.File
+	0, // 3: file_service.GetFileResponse.file:type_name -> file_service.File
+	1, // 4: file_service.FileService.UploadFile:input_type -> file_service.UploadFileRequest
+	3, // 5: file_service.FileService.ListFiles:input_type -> file_service.ListFilesRequest
+	5, // 6: file_service.FileService.GetFile:input_type -> file_service.GetFileRequest
+	2, // 7: file_service.FileService.UploadFile:output_type -> file_service.UploadFileResponse
+	4, // 8: file_service.FileService.ListFiles:output_type -> file_service.ListFilesResponse
+	6, // 9: file_service.FileService.GetFile:output_type -> file_service.GetFileResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_file_service_file_service_proto_init() }
