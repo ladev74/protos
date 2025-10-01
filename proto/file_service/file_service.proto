@@ -45,12 +45,5 @@ message GetFileRequest {
 }
 
 message GetFileResponse {
-  File file = 1;
-}
-
-message File {
-  string id = 1;
-  string name = 2;
-  google.protobuf.Timestamp createdAt = 3;
-  google.protobuf.Timestamp updatedAt = 4;
+  bytes chunk = 1;
 }

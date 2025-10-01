@@ -320,7 +320,7 @@ func (x *GetFileRequest) GetFileId() string {
 
 type GetFileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	File          *File                  `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	Chunk         []byte                 `protobuf:"bytes,1,opt,name=chunk,proto3" json:"chunk,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -355,77 +355,9 @@ func (*GetFileResponse) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetFileResponse) GetFile() *File {
+func (x *GetFileResponse) GetChunk() []byte {
 	if x != nil {
-		return x.File
-	}
-	return nil
-}
-
-type File struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=createdAt,proto3" json:"createdAt,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *File) Reset() {
-	*x = File{}
-	mi := &file_file_service_file_service_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *File) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*File) ProtoMessage() {}
-
-func (x *File) ProtoReflect() protoreflect.Message {
-	mi := &file_file_service_file_service_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use File.ProtoReflect.Descriptor instead.
-func (*File) Descriptor() ([]byte, []int) {
-	return file_file_service_file_service_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *File) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *File) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *File) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *File) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
+		return x.Chunk
 	}
 	return nil
 }
@@ -450,14 +382,9 @@ const file_file_service_file_service_proto_rawDesc = "" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
 	"\tupdatedAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\")\n" +
 	"\x0eGetFileRequest\x12\x17\n" +
-	"\afile_id\x18\x01 \x01(\tR\x06fileId\"9\n" +
-	"\x0fGetFileResponse\x12&\n" +
-	"\x04file\x18\x01 \x01(\v2\x12.file_service.FileR\x04file\"\x9e\x01\n" +
-	"\x04File\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x128\n" +
-	"\tcreatedAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
-	"\tupdatedAt\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt2\xf8\x01\n" +
+	"\afile_id\x18\x01 \x01(\tR\x06fileId\"'\n" +
+	"\x0fGetFileResponse\x12\x14\n" +
+	"\x05chunk\x18\x01 \x01(\fR\x05chunk2\xf8\x01\n" +
 	"\vFileService\x12Q\n" +
 	"\n" +
 	"UploadFile\x12\x1f.file_service.UploadFileRequest\x1a .file_service.UploadFileResponse(\x01\x12L\n" +
@@ -476,7 +403,7 @@ func file_file_service_file_service_proto_rawDescGZIP() []byte {
 	return file_file_service_file_service_proto_rawDescData
 }
 
-var file_file_service_file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_file_service_file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_file_service_file_service_proto_goTypes = []any{
 	(*UploadFileRequest)(nil),     // 0: file_service.UploadFileRequest
 	(*UploadFileResponse)(nil),    // 1: file_service.UploadFileResponse
@@ -485,27 +412,23 @@ var file_file_service_file_service_proto_goTypes = []any{
 	(*FileInfo)(nil),              // 4: file_service.FileInfo
 	(*GetFileRequest)(nil),        // 5: file_service.GetFileRequest
 	(*GetFileResponse)(nil),       // 6: file_service.GetFileResponse
-	(*File)(nil),                  // 7: file_service.File
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
 }
 var file_file_service_file_service_proto_depIdxs = []int32{
 	4, // 0: file_service.ListFilesResponse.files:type_name -> file_service.FileInfo
-	8, // 1: file_service.FileInfo.createdAt:type_name -> google.protobuf.Timestamp
-	8, // 2: file_service.FileInfo.updatedAt:type_name -> google.protobuf.Timestamp
-	7, // 3: file_service.GetFileResponse.file:type_name -> file_service.File
-	8, // 4: file_service.File.createdAt:type_name -> google.protobuf.Timestamp
-	8, // 5: file_service.File.updatedAt:type_name -> google.protobuf.Timestamp
-	0, // 6: file_service.FileService.UploadFile:input_type -> file_service.UploadFileRequest
-	2, // 7: file_service.FileService.ListFiles:input_type -> file_service.ListFilesRequest
-	5, // 8: file_service.FileService.GetFile:input_type -> file_service.GetFileRequest
-	1, // 9: file_service.FileService.UploadFile:output_type -> file_service.UploadFileResponse
-	3, // 10: file_service.FileService.ListFiles:output_type -> file_service.ListFilesResponse
-	6, // 11: file_service.FileService.GetFile:output_type -> file_service.GetFileResponse
-	9, // [9:12] is the sub-list for method output_type
-	6, // [6:9] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	7, // 1: file_service.FileInfo.createdAt:type_name -> google.protobuf.Timestamp
+	7, // 2: file_service.FileInfo.updatedAt:type_name -> google.protobuf.Timestamp
+	0, // 3: file_service.FileService.UploadFile:input_type -> file_service.UploadFileRequest
+	2, // 4: file_service.FileService.ListFiles:input_type -> file_service.ListFilesRequest
+	5, // 5: file_service.FileService.GetFile:input_type -> file_service.GetFileRequest
+	1, // 6: file_service.FileService.UploadFile:output_type -> file_service.UploadFileResponse
+	3, // 7: file_service.FileService.ListFiles:output_type -> file_service.ListFilesResponse
+	6, // 8: file_service.FileService.GetFile:output_type -> file_service.GetFileResponse
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_file_service_file_service_proto_init() }
@@ -519,7 +442,7 @@ func file_file_service_file_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_file_service_file_service_proto_rawDesc), len(file_file_service_file_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
