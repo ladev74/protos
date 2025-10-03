@@ -320,7 +320,8 @@ func (x *GetFileRequest) GetFileId() string {
 
 type GetFileResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chunk         []byte                 `protobuf:"bytes,1,opt,name=chunk,proto3" json:"chunk,omitempty"`
+	FileName      string                 `protobuf:"bytes,1,opt,name=fileName,proto3" json:"fileName,omitempty"`
+	Chunk         []byte                 `protobuf:"bytes,2,opt,name=chunk,proto3" json:"chunk,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -355,6 +356,13 @@ func (*GetFileResponse) Descriptor() ([]byte, []int) {
 	return file_file_service_file_service_proto_rawDescGZIP(), []int{6}
 }
 
+func (x *GetFileResponse) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
+}
+
 func (x *GetFileResponse) GetChunk() []byte {
 	if x != nil {
 		return x.Chunk
@@ -382,9 +390,10 @@ const file_file_service_file_service_proto_rawDesc = "" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
 	"\tupdatedAt\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\")\n" +
 	"\x0eGetFileRequest\x12\x17\n" +
-	"\afile_id\x18\x01 \x01(\tR\x06fileId\"'\n" +
-	"\x0fGetFileResponse\x12\x14\n" +
-	"\x05chunk\x18\x01 \x01(\fR\x05chunk2\xf8\x01\n" +
+	"\afile_id\x18\x01 \x01(\tR\x06fileId\"C\n" +
+	"\x0fGetFileResponse\x12\x1a\n" +
+	"\bfileName\x18\x01 \x01(\tR\bfileName\x12\x14\n" +
+	"\x05chunk\x18\x02 \x01(\fR\x05chunk2\xf8\x01\n" +
 	"\vFileService\x12Q\n" +
 	"\n" +
 	"UploadFile\x12\x1f.file_service.UploadFileRequest\x1a .file_service.UploadFileResponse(\x01\x12L\n" +

@@ -45,5 +45,6 @@ message GetFileRequest {
 }
 
 message GetFileResponse {
-  bytes chunk = 1;
+  string fileName = 1;
+  bytes chunk = 2;
 }
